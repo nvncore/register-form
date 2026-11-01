@@ -31,7 +31,11 @@ interface FormErrors {
   agreeTerms?: string;
 }
 
-export const RegisterForm: React.FC = () => {
+interface RegisterFormProps {
+  onSwitchToLogin?: () => void;
+}
+
+export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
   const [formData, setFormData] = useState<FormData>({
     fullName: '',
     email: '',
@@ -453,8 +457,16 @@ export const RegisterForm: React.FC = () => {
 
         {/* Footer */}
         <div className="card-footer">
-          Đã có tài khoản?
-          <a href="#login" onClick={e => e.preventDefault()}>Đăng nhập ngay</a>
+          Đã có tài khoản?{' '}
+          <a
+            href="#login"
+            onClick={e => {
+              e.preventDefault();
+              onSwitchToLogin?.();
+            }}
+          >
+            Đăng nhập ngay
+          </a>
         </div>
       </form>
     </div>
