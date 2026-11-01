@@ -6,6 +6,7 @@ interface LoginFormProps {
   onLoginSuccess: (user: { email: string }) => void;
   onSwitchToForgot?: () => void;
   defaultEmail?: string;
+  onSwitchToChangePassword?: () => void;
 }
 
 export const LoginForm: React.FC<LoginFormProps> = ({
@@ -13,6 +14,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   onLoginSuccess,
   onSwitchToForgot,
   defaultEmail = '',
+  onSwitchToChangePassword,
 }) => {
   const [formData, setFormData] = useState({
     email: defaultEmail,
@@ -167,17 +169,33 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         </button>
 
         {/* Footer */}
-        <div className="card-footer">
-          Chưa có tài khoản?{' '}
-          <a
-            href="#register"
-            onClick={(e) => {
-              e.preventDefault();
-              onSwitchToRegister();
-            }}
-          >
-            Đăng ký ngay
-          </a>
+        <div className="card-footer" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div>
+            Chưa có tài khoản?{' '}
+            <a
+              href="#register"
+              onClick={(e) => {
+                e.preventDefault();
+                onSwitchToRegister();
+              }}
+            >
+              Đăng ký ngay
+            </a>
+          </div>
+          {onSwitchToChangePassword && (
+            <div>
+              <a
+                href="#change-password"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onSwitchToChangePassword();
+                }}
+                style={{ fontSize: '13px', color: 'var(--text-muted)' }}
+              >
+                Đổi mật khẩu tài khoản
+              </a>
+            </div>
+          )}
         </div>
       </form>
     </div>
