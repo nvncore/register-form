@@ -1,20 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Mail, Lock, Eye, EyeOff, LogIn, AlertCircle, Sparkles } from 'lucide-react';
 
 interface LoginFormProps {
   onSwitchToRegister: () => void;
   onLoginSuccess: (user: { email: string }) => void;
+  onSwitchToForgot?: () => void;
+  defaultEmail?: string;
 }
 
-export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister, onLoginSuccess }) => {
+export const LoginForm: React.FC<LoginFormProps> = ({
+  onSwitchToRegister,
+  onLoginSuccess,
+  onSwitchToForgot,
+  defaultEmail = '',
+}) => {
   const [formData, setFormData] = useState({
-    email: '',
+    email: defaultEmail,
     password: '',
     rememberMe: false,
   });
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (defaultEmail) {
+      setFormData((prev) => ({ ...prev, email: defaultEmail }));
+    }
+  }, [defaultEmail]);
 
   const validate = () => {
     const errs: { email?: string; password?: string } = {};
@@ -85,7 +98,14 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister, onLogi
         <div className="form-group">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
             <label className="form-label" style={{ marginBottom: 0 }}>Mật khẩu</label>
-            <a href="#forgot" style={{ fontSize: '13px', color: 'var(--primary)', textDecoration: 'none' }} onClick={(e) => e.preventDefault()}>
+            <a
+              href="#forgot"
+              style={{ fontSize: '13px', color: 'var(--primary)', textDecoration: 'none' }}
+              onClick={(e) => {
+                e.preventDefault();
+                onSwitchToForgot?.();
+              }}
+            >
               Quên mật khẩu?
             </a>
           </div>
