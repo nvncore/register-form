@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { RegisterForm } from './components/RegisterForm';
 import { LoginForm } from './components/LoginForm';
+import { ForgotPasswordForm } from './components/ForgotPasswordForm';
 import { CheckCircle2, LogOut, User } from 'lucide-react';
 
 export const App: React.FC = () => {
-  const [view, setView] = useState<'login' | 'register'>('login');
+  const [view, setView] = useState<'login' | 'register' | 'forgot-password'>('login');
   const [loggedInUser, setLoggedInUser] = useState<{ email: string } | null>(null);
+  const [resetEmail, setResetEmail] = useState('');
 
   const handleLogout = () => {
     setLoggedInUser(null);
@@ -96,7 +98,18 @@ export const App: React.FC = () => {
         ) : view === 'login' ? (
           <LoginForm
             onSwitchToRegister={() => setView('register')}
+            onSwitchToForgot={() => setView('forgot-password')}
+            defaultEmail={resetEmail}
             onLoginSuccess={(user) => setLoggedInUser(user)}
+          />
+        ) : view === 'forgot-password' ? (
+          <ForgotPasswordForm
+            initialEmail={resetEmail}
+            onSwitchToLogin={() => setView('login')}
+            onResetSuccess={(email) => {
+              setResetEmail(email);
+              setView('login');
+            }}
           />
         ) : (
           <RegisterForm onSwitchToLogin={() => setView('login')} />
