@@ -3,17 +3,20 @@ import { RegisterForm } from './components/RegisterForm';
 import { LoginForm } from './components/LoginForm';
 import { ForgotPasswordForm } from './components/ForgotPasswordForm';
 import { ChangePasswordForm } from './components/ChangePasswordForm';
-import { CheckCircle2, LogOut, User, KeyRound, LogIn, UserPlus } from 'lucide-react';
+import { TotpForm } from './components/TotpForm';
+import { CheckCircle2, LogOut, User, KeyRound, LogIn, UserPlus, ShieldCheck } from 'lucide-react';
 
 export const App: React.FC = () => {
-  const [view, setView] = useState<'login' | 'register' | 'change-password' | 'forgot-password'>('login');
+  const [view, setView] = useState<'login' | 'register' | 'change-password' | 'forgot-password' | 'totp'>('login');
   const [loggedInUser, setLoggedInUser] = useState<{ email: string } | null>(null);
   const [resetEmail, setResetEmail] = useState('');
   const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [isConfiguringTotp, setIsConfiguringTotp] = useState(false);
 
   const handleLogout = () => {
     setLoggedInUser(null);
     setIsChangingPassword(false);
+    setIsConfiguringTotp(false);
     setView('login');
   };
 
@@ -28,6 +31,11 @@ export const App: React.FC = () => {
               userEmail={loggedInUser.email}
               onCancel={() => setIsChangingPassword(false)}
               onSwitchToLogin={handleLogout}
+            />
+          ) : isConfiguringTotp ? (
+            <TotpForm
+              userEmail={loggedInUser.email}
+              onSwitchToLogin={() => setIsConfiguringTotp(false)}
             />
           ) : (
             <div className="card" style={{ textAlign: 'center', padding: '40px 24px' }}>
@@ -105,6 +113,20 @@ export const App: React.FC = () => {
                 <button
                   type="button"
                   className="btn-secondary"
+                  onClick={() => setIsConfiguringTotp(true)}
+                  style={{
+                    background: 'rgba(99, 102, 241, 0.12)',
+                    color: '#818cf8',
+                    border: '1px solid rgba(99, 102, 241, 0.25)',
+                  }}
+                >
+                  <ShieldCheck size={18} />
+                  <span>Cài đặt mã TOTP (2FA)</span>
+                </button>
+
+                <button
+                  type="button"
+                  className="btn-secondary"
                   onClick={handleLogout}
                   style={{
                     background: 'rgba(244, 63, 94, 0.12)',
@@ -146,6 +168,14 @@ export const App: React.FC = () => {
                   <KeyRound size={15} />
                   <span>Đổi mật khẩu</span>
                 </button>
+                <button
+                  type="button"
+                  className={`segment-btn ${view === 'totp' ? 'active' : ''}`}
+                  onClick={() => setView('totp')}
+                >
+                  <ShieldCheck size={15} />
+                  <span>Mã TOTP</span>
+                </button>
               </div>
             )}
 
@@ -154,6 +184,7 @@ export const App: React.FC = () => {
                 onSwitchToRegister={() => setView('register')}
                 onSwitchToForgot={() => setView('forgot-password')}
                 onSwitchToChangePassword={() => setView('change-password')}
+                onSwitchToTotp={() => setView('totp')}
                 defaultEmail={resetEmail}
                 onLoginSuccess={(user) => setLoggedInUser(user)}
               />
@@ -165,6 +196,13 @@ export const App: React.FC = () => {
 
             {view === 'change-password' && (
               <ChangePasswordForm onSwitchToLogin={() => setView('login')} />
+            )}
+
+            {view === 'totp' && (
+              <TotpForm
+                userEmail={resetEmail || 'user@example.com'}
+                onSwitchToLogin={() => setView('login')}
+              />
             )}
 
             {view === 'forgot-password' && (
