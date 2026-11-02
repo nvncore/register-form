@@ -761,3 +761,20 @@ body {
   font-weight: 600;
   box-shadow: 0 2px 8px rgba(99, 102, 241, 0.25);
 }
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .segmented-control {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .segmented-control::-webkit-scrollbar {
+    display: none;
+  }
+  .segment-btn {
+    padding: 7px 8px;
+    font-size: 0.78rem;
+    white-space: nowrap;
+  }
+}

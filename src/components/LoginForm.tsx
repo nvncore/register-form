@@ -7,6 +7,7 @@ interface LoginFormProps {
   onSwitchToForgot?: () => void;
   defaultEmail?: string;
   onSwitchToChangePassword?: () => void;
+  onSwitchToTotp?: () => void;
 }
 
 export const LoginForm: React.FC<LoginFormProps> = ({
@@ -15,6 +16,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   onSwitchToForgot,
   defaultEmail = '',
   onSwitchToChangePassword,
+  onSwitchToTotp,
 }) => {
   const [formData, setFormData] = useState({
     email: defaultEmail,
@@ -182,6 +184,20 @@ export const LoginForm: React.FC<LoginFormProps> = ({
               Đăng ký ngay
             </a>
           </div>
+          {onSwitchToTotp && (
+            <div>
+              <a
+                href="#totp"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onSwitchToTotp();
+                }}
+                style={{ fontSize: '13px', color: 'var(--text-muted)' }}
+              >
+                Xác thực 2 bước với mã TOTP
+              </a>
+            </div>
+          )}
           {onSwitchToChangePassword && (
             <div>
               <a
