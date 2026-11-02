@@ -1,0 +1,4 @@
+# Danh sách các file bị gitignore cần tự động sao chép sang worktree mới
+.env
+.env.local
+.vscode/settings.json

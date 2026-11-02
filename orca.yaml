@@ -1,0 +1,4 @@
+# Cấu hình Orca Worktree
+worktree:
+  sharedDirectories:
+    - node_modules
