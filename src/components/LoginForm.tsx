@@ -165,7 +165,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           ) : (
             <>
               <span>Đăng nhập</span>
-              <LogIn size={18} />
+              <LogIn size={16} />
             </>
           )}
         </button>
